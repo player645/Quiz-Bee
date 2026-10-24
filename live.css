@@ -1,0 +1,20 @@
+.room-code { font-family: var(--serif); font-size: clamp(2.4rem, 12vw, 4.5rem); letter-spacing: 0.18em; color: var(--navy); background: var(--gold-soft); border: 3px dashed var(--gold); border-radius: var(--radius); padding: 0.4rem 1rem; display: inline-block; user-select: all; }
+.players { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.5rem 0; }
+.player-chip { background: var(--navy-soft); border-radius: 999px; padding: 0.3rem 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: #98a2b3; display: inline-block; }
+.dot.on { background: var(--ok); }
+
+.status-bar { display: flex; gap: 0.6rem; align-items: center; font-size: 0.9rem; padding: 0.4rem 0.75rem; border-radius: 8px; background: var(--navy-soft); margin-bottom: 0.75rem; }
+.status-bar.bad { background: var(--bad-bg); color: #7a1912; }
+
+.timer { display: flex; align-items: center; gap: 0.75rem; }
+.timer .secs { font-family: var(--serif); font-weight: 700; font-size: 2rem; min-width: 3ch; text-align: center; color: var(--navy); background: var(--gold-soft); border-radius: 12px; padding: 0.1rem 0.6rem; }
+.timer .secs.low { color: var(--bad); background: var(--bad-bg); }
+.timer .progress { flex: 1; height: 14px; }
+.timer .progress > span { transition: width 0.25s linear; }
+
+.big-state { text-align: center; padding: 1.5rem 0.5rem; }
+.big-state .icon { font-size: 3rem; line-height: 1; }
+.host-key { background: var(--gold-soft); border: 1px dashed var(--gold); border-radius: 10px; padding: 0.5rem 0.9rem; margin-top: 0.75rem; }
+.live .choice { min-height: 64px; font-size: 1.05rem; }
+.podium-1 td { font-weight: 800; }
