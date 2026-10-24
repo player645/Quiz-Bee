@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Philippine Social Science Quiz Bee</title>
+<style>
+:root{--ink:#12264a;--ink2:#2a4170;--sun:#f4b400;--red:#b3202a;--green:#1b6b3a;--bg:#eef1f6;--card:#fff;--line:#cfd6e4;--txt:#16213a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.2;margin:0 0 .5rem}
+main{max-width:820px;margin:0 auto;padding:16px}
+.screen{display:none}.screen.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:22px;margin-bottom:16px}
+.hero{background:var(--ink);color:#fff;border-radius:10px;padding:34px 24px;margin-bottom:16px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:repeating-conic-gradient(var(--sun) 0 7.5deg,transparent 7.5deg 22.5deg);opacity:.9;-webkit-mask:radial-gradient(circle,transparent 34px,#000 35px);mask:radial-gradient(circle,transparent 34px,#000 35px)}
+.hero h1{font-size:2.2rem;position:relative;max-width:80%}.hero p{margin:0;position:relative;color:#d6def0}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;background:#e4e9f4;font-size:.85rem;margin-right:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.grid div{border-left:4px solid var(--sun);background:#f6f8fc;padding:8px 12px}
+label{font-weight:600;display:block;margin-bottom:4px}
+input[type=text]{width:100%;padding:12px;font-size:1rem;border:2px solid var(--line);border-radius:8px}
+input:focus,button:focus-visible,select:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+button{font:inherit;cursor:pointer}
+.btn{background:var(--ink);color:#fff;border:0;border-radius:8px;padding:12px 22px;font-weight:600}
+.btn:hover{background:var(--ink2)}.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.alt{background:#fff;color:var(--ink);border:2px solid var(--ink)}
+.top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-weight:600}
+.bar{height:10px;background:#dbe1ee;border-radius:9px;margin:8px 0 16px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--sun);transition:width .3s}
+.q{font-size:1.2rem;font-family:Georgia,serif;margin:12px 0 16px}
+.opt{display:flex;gap:12px;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:8px;padding:12px;margin-bottom:10px;color:var(--txt)}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt b{min-width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;text-align:center;line-height:26px;flex:none}
+.opt.ok{border-color:var(--green);background:#e6f3ea}.opt.bad{border-color:var(--red);background:#fbe9ea}
+.opt:disabled{cursor:default}
+.fb{margin-top:14px;padding:14px;border-radius:8px;border-left:6px solid}
+.fb.ok{background:#e6f3ea;border-color:var(--green)}.fb.bad{background:#fbe9ea;border-color:var(--red)}
+.fb strong{font-size:1.1rem}.err{color:var(--red);font-weight:600;min-height:1.4em}
+.score{font-family:Georgia,serif;font-size:3rem;color:var(--ink);margin:0}
+table{width:100%;border-collapse:collapse}th,td{padding:8px;border-bottom:1px solid var(--line);text-align:left}
+.rv{border-left:6px solid;padding:12px 14px;margin-bottom:12px;background:#fff;border-radius:6px;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.rv.ok{border-left-color:var(--green)}.rv.bad{border-left-color:var(--red)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+select{padding:8px;border-radius:6px;border:2px solid var(--line);font:inherit}
+@media(max-width:520px){.hero h1{font-size:1.7rem;max-width:100%}.card{padding:16px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<section id="welcome" class="screen on">
+ <div class="hero"><h1>Philippine Social Science Quiz Bee</h1><p>College-Level Competitive Challenge</p></div>
+ <div class="card">
+  <h2>How it works</h2>
+  <p>You will answer 40 questions, one at a time, with no timer. Answers are checked right away and the correct answer is always shown.</p>
+  <ul>
+   <li><b>Section One:</b> 20 multiple-choice questions, 1 point each (20 points).</li>
+   <li><b>Section Two:</b> 20 identification questions, typed answers, 2 points each (40 points).</li>
+   <li><b>Maximum score:</b> 60 points.</li>
+  </ul>
+  <div class="grid"><div>History</div><div>Culture</div><div>Geography</div><div>Government</div></div>
+  <p style="margin-top:18px"><label for="pname">Name or team name (optional)</label><input id="pname" type="text" maxlength="40" autocomplete="off"></p>
+  <button class="btn" id="startBtn">Start Quiz</button>
+ </div>
+</section>
+
+<section id="quiz" class="screen">
+ <div class="card">
+  <div class="top"><span id="qnum"></span><span id="sc"></span></div>
+  <div class="bar" role="progressbar" aria-label="Quiz progress" id="pbar" aria-valuemin="0" aria-valuemax="40"><i id="pfill"></i></div>
+  <div><span class="pill" id="qcat"></span><span class="pill" id="qtype"></span><span class="pill" id="qpts"></span></div>
+  <p class="q" id="qtext"></p>
+  <div id="ans"></div>
+  <p class="err" id="err" role="alert"></p>
+  <div id="fb" aria-live="polite"></div>
+  <div class="row"><button class="btn" id="nextBtn" hidden>Next Question</button></div>
+ </div>
+</section>
+
+<section id="results" class="screen">
+ <div class="hero"><h1>Final Results</h1><p id="who"></p></div>
+ <div class="card" id="resBox"></div>
+ <div class="row" style="margin-bottom:16px"><button class="btn" id="revBtn">Review Answers</button><button class="btn alt" id="againBtn">Play Again</button></div>
+</section>
+
+<section id="review" class="screen">
+ <div class="card">
+  <h2>Answer Sheet</h2>
+  <p>Final score: <b id="revScore"></b> (reviewing does not change your score)</p>
+  <div class="row" style="margin:0 0 14px">
+   <label>Category <select id="fCat"><option value="">All</option></select></label>
+   <label>Result <select id="fRes"><option value="">All</option><option value="ok">Correct</option><option value="bad">Incorrect</option></select></label>
+   <label>Type <select id="fType"><option value="">All</option><option value="mc">Multiple Choice</option><option value="id">Identification</option></select></label>
+  </div>
+  <div id="revList"></div>
+  <div class="row"><button class="btn alt" id="backBtn">Back to Results</button><button class="btn" id="again2">Play Again</button></div>
+ </div>
+</section>
+</main>
+
+<script>
+"use strict";
+const CATS=["History","Culture","Geography","Government"];
+
+/* Multiple choice: [question, correct answer, [3 wrong answers], explanation] */
+const MC={
+History:[
+["How much did the United States pay Spain under the 1898 Treaty of Paris for the Philippines?","$20 million",["$10 million","$50 million","$5 million"],"Article III of the Treaty of Paris ceded the Philippines to the US in exchange for $20 million."],
+["In what year was the Katipunan founded by Andres Bonifacio and others?","1892",["1872","1896","1898"],"The Katipunan (KKK) was founded on July 7, 1892; it was discovered in August 1896, triggering the Revolution."],
+["The 1897 Pact of Biak-na-Bato led Emilio Aguinaldo and other leaders to go into exile in which place?","Hong Kong",["Guam","Singapore","Japan"],"Under the pact, Aguinaldo and companions accepted payment and went to Hong Kong in December 1897."],
+["Spanish authorities used which 1872 event to implicate Gomburza?","The Cavite Mutiny",["The Basi Revolt","The Sakdal Uprising","The Dagohoy Rebellion"],"The Cavite Mutiny at Fort San Felipe was used to implicate Gomez, Burgos and Zamora, who were executed on February 17, 1872."],
+["Which 1934 American law set a ten-year Commonwealth transition to independence?","Tydings-McDuffie Act",["Jones Law","Philippine Bill of 1902","Spooner Amendment"],"The Philippine Independence Act (Tydings-McDuffie) created the Commonwealth in 1935 with independence promised after ten years."],
+["In what year did the last Manila-Acapulco galleon sail?","1815",["1565","1898","1946"],"The galleon trade lasted from 1565 until the final sailing in 1815."],
+["Which proclamation formally placed the Philippines under martial law on September 21, 1972?","Proclamation No. 1081",["Proclamation No. 1017","Proclamation No. 2045","Proclamation No. 216"],"Proclamation No. 1081 was signed by Ferdinand Marcos; Proclamation No. 2045 lifted martial law in 1981."],
+["Which Archbishop of Manila used Radio Veritas to call people to EDSA in February 1986?","Jaime Cardinal Sin",["Julio Cardinal Rosales","Gaudencio Cardinal Rosales","Ricardo Cardinal Vidal"],"Cardinal Sin appealed over Radio Veritas for people to support Enrile and Ramos at Camps Aguinaldo and Crame."]],
+Culture:[
+["Which is the epic chant of the Ifugao inscribed by UNESCO as Intangible Cultural Heritage?","Hudhud",["Darangen","Ullalim","Tuwaang"],"The Hudhud is chanted by Ifugao women, notably during rice-harvest, weeding and funeral rituals."],
+["Which festival of Kalibo, Aklan honors the Santo Nino and is tied to the Ati people?","Ati-Atihan",["Dinagyang","Sinulog","MassKara"],"Ati-Atihan is celebrated every January in Kalibo; Dinagyang is in Iloilo City, Sinulog in Cebu City, MassKara in Bacolod."],
+["How many basic characters does the pre-colonial Baybayin script have?","17",["14","20","23"],"Baybayin has 3 vowels and 14 consonants, each consonant carrying an inherent /a/ sound."],
+["Virgilio Enriquez's Sikolohiyang Pilipino treats which value as the core of Filipino social interaction?","Kapwa",["Hiya","Bahala na","Pakikisama"],"Kapwa, or shared identity, is the core concept from which other Filipino values are understood."],
+["The Moriones Festival, with masked Roman soldiers during Holy Week, is celebrated in which province?","Marinduque",["Romblon","Quezon","Occidental Mindoro"],"The Moriones, centered on the legend of Longinus, takes place in towns such as Boac, Gasan and Mogpog."],
+["The T'nalak cloth, woven from abaca and traditionally dyed in red, black and natural tones, is made by which group?","T'boli",["Tausug","Ifugao","Ivatan"],"T'nalak is made by the T'boli of South Cotabato; its patterns are said to be received in dreams."],
+["Which traditional head cloth is associated with the Tausug of Sulu?","Pis siyabit",["Malong","Inabel","Kalasag"],"The pis siyabit is a square, intricately woven Tausug head cloth."],
+["In Tagalog marriage custom, what is the formal visit of the groom's family to the bride's family called?","Pamamanhikan",["Padugo","Pagmamano","Pasiyam"],"Pamamanhikan is the formal request for the woman's hand and discussion of wedding arrangements."]],
+Geography:[
+["Which is the longest river in the Philippines?","Cagayan River",["Agusan River","Pampanga River","Abra River"],"The Cagayan River in northern Luzon is about 505 km long."],
+["Which is the highest mountain in the Philippines?","Mount Apo",["Mount Pulag","Mount Dulang-dulang","Mount Halcon"],"Mount Apo (about 2,954 m) in Mindanao is higher than Mount Pulag (about 2,922 m)."],
+["Which deep ocean trench lies east of the Philippine archipelago?","Philippine Trench",["Manila Trench","Cotabato Trench","Negros Trench"],"The Philippine Trench, also called the Mindanao Trench, includes the Galathea Depth."],
+["Which is the largest lake in the Philippines?","Laguna de Bay",["Lake Lanao","Taal Lake","Lake Buluan"],"Laguna de Bay covers roughly 900 square kilometers."],
+["According to NAMRIA, how many islands make up the Philippines?","7,641",["7,107","7,500","8,000"],"NAMRIA's count is 7,641; the older figure was 7,107."],
+["In which sea are the Tubbataha Reefs located?","Sulu Sea",["Celebes Sea","Philippine Sea","South China Sea"],"Tubbataha Reefs Natural Park in Palawan was inscribed on the UNESCO World Heritage List in 1993."],
+["In which province is Mayon Volcano located?","Albay",["Sorsogon","Camarines Sur","Catanduanes"],"Mayon, famed for its near-perfect cone, is in Albay in the Bicol Region."],
+["Which is the longest mountain range in the Philippines?","Sierra Madre",["Cordillera Central","Zambales Mountains","Caraballo Mountains"],"The Sierra Madre runs along eastern Luzon for about 540 km."]],
+Government:[
+["Which Article of the 1987 Constitution contains the Bill of Rights?","Article III",["Article II","Article IV","Article VI"],"Article III is the Bill of Rights; Article II covers Declaration of Principles and State Policies."],
+["How many Constitutional Commissions are established under Article IX of the 1987 Constitution?","Three",["Two","Four","Five"],"They are the Civil Service Commission, the Commission on Elections and the Commission on Audit."],
+["What is the maximum number of consecutive terms for a member of the House of Representatives?","Three terms",["Two terms","Four terms","No limit"],"House members serve three-year terms, with a limit of three consecutive terms."],
+["Which Republic Act is the Local Government Code of 1991?","R.A. 7160",["R.A. 6975","R.A. 7279","R.A. 8371"],"R.A. 7160 devolved powers to LGUs; R.A. 8371 is the Indigenous Peoples' Rights Act."],
+["How many votes are needed in the Senate to convict an impeached official?","Two-thirds of all its members",["A majority of all members","Three-fourths of all members","Three-fifths of all members"],"Article XI, Section 3(6) requires the concurrence of two-thirds of all Senate members."],
+["How many members does the Supreme Court have?","15",["9","11","13"],"The Court has a Chief Justice and fourteen Associate Justices."],
+["Which Republic Act is the Bangsamoro Organic Law that created BARMM?","R.A. 11054",["R.A. 9054","R.A. 6734","R.A. 10153"],"R.A. 11054 was signed in 2018 and ratified by plebiscite in 2019."],
+["Without congressional extension, what is the maximum duration of martial law or suspension of the writ of habeas corpus?","60 days",["30 days","90 days","120 days"],"Article VII, Section 18 limits the proclamation to 60 days unless Congress extends it."]]
+};
+
+/* Identification: [question, [accepted answers], display answer, explanation] */
+const ID={
+History:[
+["This 1896 primer of the Katipunan, written by Emilio Jacinto, set out the moral code of members. Name it.",["kartilya ng katipunan","kartilya"],"Kartilya ng Katipunan","Jacinto's Kartilya replaced Bonifacio's earlier draft as the society's primer of conduct."],
+["Name the constitution of the First Philippine Republic drafted at Barasoain Church in 1898-1899.",["malolos constitution","1899 malolos constitution","constitution of malolos"],"Malolos Constitution","It was promulgated on January 21, 1899, and is considered the first republican constitution in Asia."],
+["Who established Manila as the capital of the Spanish East Indies in 1571?",["legazpi","miguel lopez de legazpi"],"Miguel Lopez de Legazpi","Legazpi founded Cebu in 1565, then Manila in 1571."],
+["Who was President of the Japanese-sponsored Second Philippine Republic (1943-1945)?",["jose p laurel","jose laurel","laurel"],"Jose P. Laurel","Laurel was inaugurated on October 14, 1943."],
+["Who continued the Ilocos revolt after the assassination of her husband Diego Silang in 1763?",["gabriela silang","maria josefa gabriela cariño silang"],"Gabriela Silang","She led the revolt until her capture and execution in September 1763."],
+["Under Spanish rule, what was the forced labor system for men aged 16 to 60, originally 40 days a year?",["polo y servicios","polo","polo y servicio","polo y servicios personales"],"Polo y servicios","It was reduced to 15 days in 1884."],
+["Who was the first editor of La Solidaridad, the newspaper of the Propaganda Movement?",["graciano lopez jaena","lopez jaena","graciano lopez-jaena"],"Graciano Lopez Jaena","Lopez Jaena edited it from 1889; Marcelo H. del Pilar took over in 1889."],
+["Name the 1946 US law that granted parity rights to Americans in exploiting Philippine natural resources.",["bell trade act","philippine trade act","bell trade act of 1946","philippine trade act of 1946"],"Bell Trade Act","The Philippine Trade Act of 1946 required a constitutional amendment for parity rights."]],
+Culture:[
+["Name the epic of the Maranao, a UNESCO Masterpiece of the Oral and Intangible Heritage of Humanity.",["darangen"],"Darangen","The Darangen was proclaimed in 2005 and is chanted in Lanao."],
+["What was the Tagalog term for the noble class in pre-colonial society?",["maginoo"],"Maginoo","Below them were the maharlika (warriors), timawa-like freemen and the alipin."],
+["What is the Tagalog poetic debate named in honor of Francisco Balagtas?",["balagtasan"],"Balagtasan","Balagtasan was developed in the 1920s and debates a topic in verse."],
+["Name the peace pact system among the peoples of the Cordillera, particularly the Kalinga.",["bodong","budong","bodong system"],"Bodong","A bodong settles disputes and keeps peace between communities."],
+["Name the movement founded by Virgilio Enriquez that studies Filipino psychology from indigenous perspective.",["sikolohiyang pilipino","filipino psychology"],"Sikolohiyang Pilipino","It uses indigenous concepts such as kapwa and pakikipagkapwa."],
+["Name the epic of the Sulod of central Panay.",["hinilawod"],"Hinilawod","The epic centers on the adventures of Humadapnon, Labaw Donggon and Dumalapdap."],
+["What is the name of the carved Ifugao wooden figure that guards rice granaries?",["bulul","bulol"],"Bulul","The bulul is a rice-deity figure placed in granaries and houses."],
+["Name the Filipino value of reciprocal debt of gratitude.",["utang na loob","utang-na-loob"],"Utang na loob","It binds a person to repay help received."]],
+Geography:[
+["Name the strait between Luzon and Taiwan.",["luzon strait","bashi channel"],"Luzon Strait","The Bashi Channel lies within it, between Batanes and Taiwan."],
+["Name the strait between Samar and Leyte crossed by the longest bridge in the Philippines.",["san juanico strait","san juanico"],"San Juanico Strait","The San Juanico Bridge opened in 1973."],
+["Name the highest mountain on Luzon.",["mount pulag","pulag"],"Mount Pulag","It stands about 2,922 m on the border of Benguet, Ifugao and Nueva Vizcaya."],
+["Name the vast marsh in Maguindanao and Cotabato that is fed by the Rio Grande de Mindanao.",["liguasan marsh","ligawasan marsh"],"Liguasan Marsh","It is a major wetland of the Mindanao River basin."],
+["Which province is the southernmost in the Philippines?",["tawi-tawi","tawi tawi","tawitawi"],"Tawi-Tawi","It is at the southwestern end of the Sulu Archipelago."],
+["Name the UNESCO-listed cave river in Palawan with a navigable underground channel.",["puerto princesa subterranean river","puerto princesa underground river","puerto princesa subterranean river national park"],"Puerto Princesa Subterranean River","It was inscribed on the World Heritage List in 1999."],
+["Name the marine passage between Batangas and Mindoro known as the center of the center of marine shorefish biodiversity.",["verde island passage","verde island"],"Verde Island Passage","It is rich in coral reef biodiversity."],
+["What was the former name of the undersea region east of Luzon renamed Philippine Rise in 2018?",["benham rise","benham"],"Benham Rise","The UN granted the Philippines' claim to it as an extended continental shelf in 2012."]],
+Government:[
+["What agency, created by R.A. 10625, is the central statistical authority of the Philippines?",["psa","philippine statistics authority"],"Philippine Statistics Authority","It merged earlier statistical agencies and conducts the census."],
+["What constitutional body investigates and prosecutes public officials for illegal acts?",["ombudsman","office of the ombudsman"],"Office of the Ombudsman","It is created under Article XI of the 1987 Constitution."],
+["Which constitutional commission examines and audits government funds?",["commission on audit","coa"],"Commission on Audit","It is one of the three constitutional commissions."],
+["What anti-graft court is mandated by Article XI of the 1987 Constitution?",["sandiganbayan"],"Sandiganbayan","It tries graft and corruption cases involving public officials."],
+["Which body recommends appointees to the Judiciary and the Office of the Ombudsman?",["judicial and bar council","jbc"],"Judicial and Bar Council","The JBC is under the supervision of the Supreme Court."],
+["Which tribunal decides election contests for President and Vice President?",["presidential electoral tribunal","pet"],"Presidential Electoral Tribunal","The Supreme Court sits en banc as the PET."],
+["What writ, created in 2007, protects the right to life, liberty and security against extralegal killings and enforced disappearances?",["writ of amparo","amparo"],"Writ of Amparo","The Supreme Court issued the Rule on the Writ of Amparo in 2007."],
+["What independent planning agency, headed by the President, is mandated by Article XII of the 1987 Constitution?",["neda","national economic and development authority"],"National Economic and Development Authority","NEDA is the country's economic planning body."]]
+};
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const show=id=>{document.querySelectorAll(".screen").forEach(e=>e.classList.toggle("on",e.id===id));window.scrollTo(0,0)};
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/&/g," and ").replace(/[.,'"`()]/g,"").replace(/[-_]/g," ").replace(/\s+/g," ").trim().replace(/^the /,"")}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let Q=[],cur=0,name="";
+const MAX=60;
+function build(){
+ const mc=[],id=[];
+ CATS.forEach(c=>{
+  shuffle(MC[c]).slice(0,5).forEach(x=>mc.push({type:"mc",cat:c,q:x[0],correct:x[1],opts:shuffle([x[1],...x[2]]),exp:x[3],pts:1}));
+  shuffle(ID[c]).slice(0,5).forEach(x=>id.push({type:"id",cat:c,q:x[0],accept:x[1].map(norm),correct:x[2],exp:x[3],pts:2}));
+ });
+ Q=shuffle(mc).concat(shuffle(id));
+ Q.forEach(q=>{q.done=false;q.answer="";q.earned=0;q.ok=false});
+}
+const total=()=>Math.min(MAX,Q.reduce((s,q)=>s+q.earned,0));
+
+function start(){
+ name=$("#pname").value.trim();build();cur=0;show("quiz");render();
+}
+function render(){
+ const q=Q[cur];
+ $("#qnum").textContent=`Question ${cur+1} of ${Q.length}`;
+ $("#sc").textContent=`Score: ${total()} / ${MAX}`;
+ $("#pfill").style.width=(cur/Q.length*100)+"%";
+ $("#pbar").setAttribute("aria-valuenow",cur);
+ $("#qcat").textContent=q.cat;
+ $("#qtype").textContent=q.type==="mc"?"Multiple Choice":"Identification";
+ $("#qpts").textContent=q.pts+(q.pts>1?" points":" point");
+ $("#qtext").textContent=q.q;
+ $("#err").textContent="";$("#fb").innerHTML="";$("#nextBtn").hidden=true;
+ $("#nextBtn").textContent=cur===Q.length-1?"See Results":"Next Question";
+ const a=$("#ans");a.innerHTML="";
+ if(q.type==="mc"){
+  q.opts.forEach((o,i)=>{
+   const b=document.createElement("button");b.className="opt";b.type="button";
+   b.innerHTML=`<b>${"ABCD"[i]}</b><span>${esc(o)}</span>`;
+   b.onclick=()=>submitMC(o);a.appendChild(b);
+  });
+ }else{
+  a.innerHTML=`<form id="idf"><label for="idin">Your answer</label><input type="text" id="idin" autocomplete="off" autocapitalize="off" spellcheck="false"><div class="row"><button class="btn" type="submit" id="subBtn">Submit Answer</button></div></form>`;
+  $("#idf").onsubmit=e=>{e.preventDefault();submitID()};
+  $("#idin").focus();
+ }
+}
+function feedback(q){
+ const ok=q.ok;
+ $("#fb").innerHTML=`<div class="fb ${ok?"ok":"bad"}"><strong>${ok?"✓ Correct":"✗ Incorrect"}</strong> — ${q.earned} of ${q.pts} point${q.pts>1?"s":""} earned.<br><b>Correct answer:</b> ${esc(q.correct)}<br>${esc(q.exp)}</div>`;
+ $("#sc").textContent=`Score: ${total()} / ${MAX}`;
+ $("#nextBtn").hidden=false;$("#nextBtn").focus();
+}
+function submitMC(choice){
+ const q=Q[cur];if(q.done)return;
+ q.done=true;q.answer=choice;q.ok=choice===q.correct;q.earned=q.ok?q.pts:0;
+ document.querySelectorAll(".opt").forEach(b=>{
+  b.disabled=true;const t=b.querySelector("span").textContent;
+  if(t===q.correct){b.classList.add("ok");b.insertAdjacentHTML("beforeend","<em>(correct answer)</em>")}
+  else if(t===choice){b.classList.add("bad");b.insertAdjacentHTML("beforeend","<em>(your answer)</em>")}
+ });
+ feedback(q);
+}
+function submitID(){
+ const q=Q[cur];if(q.done)return;
+ const v=$("#idin").value;
+ if(!norm(v)){$("#err").textContent="Type an answer before submitting.";$("#idin").focus();return}
+ q.done=true;q.answer=v.trim();q.ok=q.accept.includes(norm(v));q.earned=q.ok?q.pts:0;
+ $("#idin").disabled=true;$("#subBtn").disabled=true;
+ feedback(q);
+}
+function next(){
+ if(cur<Q.length-1){cur++;render()}else finish();
+}
+function finish(){
+ const s=total(),pct=s/MAX*100;
+ const correct=Q.filter(q=>q.ok).length;
+ const mcS=Q.filter(q=>q.type==="mc").reduce((a,q)=>a+q.earned,0);
+ const idS=Q.filter(q=>q.type==="id").reduce((a,q)=>a+q.earned,0);
+ let label="Needs Improvement";
+ if(pct>=90)label="Outstanding";else if(pct>=80)label="Excellent";else if(pct>=70)label="Good";else if(pct>=60)label="Fair";
+ const msgs={Outstanding:"Superb command of Philippine Social Science.",Excellent:"Strong, well-rounded knowledge.",Good:"Solid performance with room to sharpen.",Fair:"A passing effort. Review the answer sheet and try again.","Needs Improvement":"Keep studying. The answer sheet explains every item."};
+ $("#who").textContent=name?`Participant: ${name}`:"Quiz complete";
+ const rows=CATS.map(c=>{const it=Q.filter(q=>q.cat===c);const e=it.reduce((a,q)=>a+q.earned,0),m=it.reduce((a,q)=>a+q.pts,0);return `<tr><td>${c}</td><td>${it.filter(q=>q.ok).length} / ${it.length}</td><td>${e} / ${m}</td></tr>`}).join("");
+ $("#resBox").innerHTML=`<p class="score">${s} / ${MAX}</p><p><b>${pct.toFixed(2)}%</b> — <b>${label}</b>. ${msgs[label]}</p>
+ <table><tr><th>Summary</th><th></th></tr><tr><td>Correct answers</td><td>${correct}</td></tr><tr><td>Incorrect answers</td><td>${Q.length-correct}</td></tr><tr><td>Multiple choice</td><td>${mcS} / 20</td></tr><tr><td>Identification</td><td>${idS} / 40</td></tr></table>
+ <h3 style="margin-top:18px">Performance by category</h3><table><tr><th>Category</th><th>Correct</th><th>Points</th></tr>${rows}</table>`;
+ $("#pfill").style.width="100%";
+ show("results");
+}
+function reviewList(){
+ const c=$("#fCat").value,r=$("#fRes").value,t=$("#fType").value;
+ const html=Q.map((q,i)=>({q,i})).filter(({q})=>(!c||q.cat===c)&&(!r||(r==="ok")===q.ok)&&(!t||q.type===t)).map(({q,i})=>
+  `<div class="rv ${q.ok?"ok":"bad"}"><b>${i+1}. ${q.cat} · ${q.type==="mc"?"Multiple Choice":"Identification"}</b><br>${esc(q.q)}<br>
+  <b>Your answer:</b> ${esc(q.answer||"(no answer)")}<br><b>Correct answer:</b> ${esc(q.correct)}<br>
+  <b>${q.ok?"✓ Correct":"✗ Incorrect"}</b> — ${q.earned} of ${q.pts} point${q.pts>1?"s":""}<br><small>${esc(q.exp)}</small></div>`).join("");
+ $("#revList").innerHTML=html||"<p>No questions match these filters.</p>";
+}
+function openReview(){
+ $("#revScore").textContent=`${total()} / ${MAX}`;
+ reviewList();show("review");
+}
+function again(){$("#pname").value=name;show("welcome")}
+
+CATS.forEach(c=>$("#fCat").insertAdjacentHTML("beforeend",`<option>${c}</option>`));
+["#fCat","#fRes","#fType"].forEach(s=>$(s).onchange=reviewList);
+$("#startBtn").onclick=start;
+$("#nextBtn").onclick=next;
+$("#revBtn").onclick=openReview;
+$("#backBtn").onclick=()=>show("results");
+$("#againBtn").onclick=again;$("#again2").onclick=again;
+</script>
+</body>
+</html>
