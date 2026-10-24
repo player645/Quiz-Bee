@@ -1,0 +1,41 @@
+{
+  "questions": [
+    {
+      "type": "mc",
+      "category": "Science",
+      "difficulty": "easy",
+      "points": 1,
+      "question": "Which planet is known as the Red Planet?",
+      "choices": ["Venus", "Mars", "Jupiter", "Mercury"],
+      "correct": "Mars",
+      "explanation": "Iron oxide on its surface gives Mars a reddish color."
+    },
+    {
+      "type": "id",
+      "category": "Science",
+      "difficulty": "medium",
+      "points": 2,
+      "question": "What is the chemical symbol for gold?",
+      "correct": "Au",
+      "accepted": ["Au", "gold symbol Au"],
+      "explanation": "Au comes from the Latin word aurum."
+    },
+    {
+      "type": "mc",
+      "category": "Philippine Literature",
+      "difficulty": "medium",
+      "points": 1,
+      "question": "Who wrote the novel Noli Me Tangere?",
+      "choices": ["Andres Bonifacio", "Jose Rizal", "Marcelo H. del Pilar", "Apolinario Mabini"],
+      "correct": "B",
+      "explanation": "The correct answer can be given as the choice text or as its letter (A, B, C ...)."
+    },
+    {
+      "type": "id",
+      "category": "Philippine Literature",
+      "question": "Name the Tagalog poetic debate named after Francisco Balagtas.",
+      "correct": "Balagtasan",
+      "explanation": "No difficulty given, so it defaults to medium. No points given, so identification defaults to 2."
+    }
+  ]
+}

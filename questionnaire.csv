@@ -1,0 +1,5 @@
+type,category,difficulty,points,question,correct,choice1,choice2,choice3,choice4,accepted,explanation
+mc,Science,easy,1,Which planet is known as the Red Planet?,Mars,Venus,Mars,Jupiter,Mercury,,Iron oxide on its surface gives Mars a reddish color.
+id,Science,medium,2,What is the chemical symbol for gold?,Au,,,,,Au|gold symbol Au,Au comes from the Latin word aurum.
+mc,Philippine Literature,medium,1,Who wrote the novel Noli Me Tangere?,B,Andres Bonifacio,Jose Rizal,Marcelo H. del Pilar,Apolinario Mabini,,"The correct answer can be given as the choice text or as its letter (A, B, C ...)."
+id,Philippine Literature,,,Name the Tagalog poetic debate named after Francisco Balagtas.,Balagtasan,,,,,,"No difficulty given, so it defaults to medium. No points given, so identification defaults to 2."
